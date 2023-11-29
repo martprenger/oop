@@ -21,6 +21,16 @@ public class ViewConsole implements Observer {
             }
             System.out.println();
         }
+
+        if(board.isFinished()){
+            if (board.isWinner(Board.PLAYER1)) {
+                System.out.println("Speler 1 (COMPUTER) heeft gewonnen!");
+            } else if (board.isWinner(Board.PLAYER2)) {
+                System.out.println("Speler 2 (MENS) heeft gewonnen!");
+            } else {
+                System.out.println("Er is geen winnaar.");
+            }
+        }
     }
 
 }

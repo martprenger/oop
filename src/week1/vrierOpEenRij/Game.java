@@ -1,16 +1,33 @@
 package week1.vrierOpEenRij;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import edu.princeton.cs.introcs.Draw;
 
 public class Game {
-
     private Board currentBoard;
     private int currentPlayer;
-
-    // User-interface
-    //private final Observer displayBoard = new ViewConsole();
-    private final Observer displayBoard = new ViewGraphics();
+    private final List<Observer> observers;
     private final Scanner scanner = new Scanner(System.in);
+
+    public Game() {
+        observers = new ArrayList<>();
+    }
+
+    public Board getCurrentBoard() {
+        return currentBoard;
+    }
+
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    private void displayBoards() {
+        for (Observer observer : observers) {
+            observer.displayBoard(currentBoard);
+        }
+    }
 
     private void finishTurn() {
         if (currentPlayer==Board.PLAYER1) {
@@ -22,17 +39,23 @@ public class Game {
         }
     }
 
-    private void doMove(int column) {
-        currentBoard=currentBoard.doMove(currentPlayer, column);
-        finishTurn();
-        displayBoard.displayBoard(currentBoard);
+    public void doMove(int column) {
+        if (!currentBoard.isFinished()) {
+            currentBoard = currentBoard.doMove(currentPlayer, column);
+            finishTurn();
+        }
+        if (!currentBoard.isFinished()) {
+            doTurnComputer();
+        }
+        displayBoards();
     }
 
     private void doTurnComputer() {
         int column=0;
         while(!currentBoard.isValidMove(column)) { column++; }
         if (column<Board.NUMBER_OF_COLS) {
-            doMove(column);
+            currentBoard=currentBoard.doMove(currentPlayer, column);
+            finishTurn();
         } else {
             throw new IllegalStateException("No valid move possible");
         }
@@ -44,24 +67,15 @@ public class Game {
         doMove(column);
     }
 
+    public boolean isHumanTurn() {
+        return currentPlayer==Board.PLAYER2;
+    }
+
     public void runGame() {
         currentBoard=new Board();
         currentPlayer=Board.PLAYER1;
-        while(!currentBoard.isFinished()) {
-            if (currentPlayer==Board.PLAYER1) {
-                doTurnComputer();
-            } else {
-                doTurnHuman();
-            }
-        }
-        if (currentBoard.isWinner(Board.PLAYER1)) {
-            System.out.println("Speler 1 (COMPUTER) heeft gewonnen!");
-        } else if (currentBoard.isWinner(Board.PLAYER2)) {
-            System.out.println("Speler 2 (MENS) heeft gewonnen!");
-        } else {
-            System.out.println("Er is geen winnaar.");
-        }
-
+        doTurnComputer();
+        displayBoards();
     }
 
 }
