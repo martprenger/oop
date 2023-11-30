@@ -40,10 +40,9 @@ public class Game {
     }
 
     public void doMove(int column) {
-        if (!currentBoard.isFinished()) {
-            currentBoard = currentBoard.doMove(currentPlayer, column);
-            finishTurn();
-        }
+        currentBoard = currentBoard.doMove(currentPlayer, column);
+        finishTurn();
+
         if (!currentBoard.isFinished()) {
             doTurnComputer();
         }
