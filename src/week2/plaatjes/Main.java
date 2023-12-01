@@ -1,13 +1,10 @@
 package week2.plaatjes;
 
-import edu.princeton.cs.introcs.Picture;
-
-import java.awt.*;
+import week2.plaatjes.decorators.*;
 
 public class Main {
     public static void main(String[] args) {
-        ImageEffects imageEffects = new ImageEffects("/home/pyro/repos/oop/src/week2/plaatjes/cats/kat.jpg");
-        imageEffects.getOriginal().show();
-        imageEffects.doBlur().show();
+        ImageProcessor imageProcessor = new EffectDarker(new ImageProcessorFile("/home/pyro/repos/oop/src/week2/plaatjes/cats/kat.jpg"));
+        imageProcessor.process().show();
     }
 }
