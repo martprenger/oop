@@ -15,7 +15,7 @@ public class Main {
 //        System.out.println(pizza5.getDescription()+", € "+ pizza5.getPrice());
 
         //factory
-        PizzaFactory pizzaFactoryItalia = new PizzaFactoryItalia();
+        PizzaFactory pizzaFactoryItalia = PizzaFactoryItalia.getInstance();
         Pizza pizzaHawaii = pizzaFactoryItalia.createPizza("Hawaii");
         System.out.println(pizzaHawaii.getDescription()+", € "+ pizzaHawaii.getPrice());
 
